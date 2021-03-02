@@ -1,0 +1,35 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". calculator calculator ."
+      ". calculator calculator ."
+      ". calculator calculator .";
+  }
+  .calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 1.7fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "calculator-display calculator-display calculator-display"
+      "calculator-buttons calculator-buttons calculator-buttons";
+    grid-area: calculator;
+  }
+  .calculator-display { grid-area: calculator-display; }
+  .calculator-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". . ."
+      ". . ."
+      ". . ."
+      ". . ."
+      ". . ."
+      ". . .";
+    grid-area: calculator-buttons;
+  }
