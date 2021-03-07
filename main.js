@@ -1,16 +1,10 @@
-let previous = null;
-let current = null;
-let result = null;
 let numberSetter = null;
 let lastOperator = "None";
-let aux = 0;
-let numberEnded = false;
 let flagFirst = true;
 let flagSecond = true;
 let firstNumber = "";
 let secondNumber = "";
-//previous = result
-//current
+
 function operate(operator){
     if(operator != "equal" && operator !="power"){
         if(operator == "power" && lastOperator == "None"){
@@ -57,15 +51,12 @@ function operate(operator){
                 case "add":{
                     firstNumber = secondNumber + firstNumber;
                     flagSecond = true;
-                    //secondNumber = "";
                     updateDisplay(firstNumber);
-                    //flagFirst = true;
                     return;
                 }
                 case "subtract":{
                     firstNumber = (secondNumber - firstNumber)*-1;
                     flagSecond = true;
-                    //secondNumber = "";
                     updateDisplay(firstNumber);
                     return;
                 }
@@ -92,16 +83,14 @@ function operate(operator){
                     return;
                 }
             }
-        }
-        
+        }   
     }
-    console.log('here');
 
 }
-function updatePrevious(number){
-    previous = parseFloat(number);
-    //current = 0;
-}
+//
+// Sets the most recent input by user as firstNumber if 
+//  it is the first input, or, as secondNumber if the flag is true.
+//
 function setCurrent(number){
     if(flagFirst == true){
         firstNumber = firstNumber.toString();
@@ -119,26 +108,23 @@ function setCurrent(number){
         if(number != "."){
             secondNumber = parseFloat(secondNumber).toPrecision(15) * 1;
         }
-        updateDisplay(secondNumber);
-            
-    }
-    
-    
-    
-
+        updateDisplay(secondNumber);            
+    }    
 }
-
+//
+// Function to update the display with a string containing the most recent input or most recent result.
+//
 function updateDisplay(number){
     number = parseFloat(number);
     number = number.toPrecision(15);
     number = number*1;
     display.textContent = number.toString();
 }
-//update display
 
+//display element
 const display = document.getElementById('result-display');
 
-//Numerical buttons
+//Numerical buttons elements
 const Button1 = document.getElementById("1");
 const Button2 = document.getElementById("2");
 const Button3 = document.getElementById("3");
@@ -165,6 +151,7 @@ const minusplusButton = document.getElementById("invert");
 const clearButton = document.getElementById("clear");
 const equalsButton = document.getElementById("equal");
 const decimalButton = document.getElementById("comma");
+
 //function binds
 subtractionButton.addEventListener('click', operate.bind(null, "subtract"));
 addButton.addEventListener('click', operate.bind(null, "add"));
