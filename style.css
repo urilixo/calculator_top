@@ -18,7 +18,11 @@
       "calculator-buttons calculator-buttons calculator-buttons calculator-buttons";
     grid-area: calculator;
   }
-  .calculator-display { grid-area: calculator-display; }
+  .calculator-display { 
+      background-color:lawngreen;
+      text-align: right;
+      grid-area: calculator-display; 
+    }
   .calculator-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;

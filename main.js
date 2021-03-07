@@ -1,34 +1,143 @@
-let previous = 0;
-let current = 0;
-let result = 0;
+let previous = null;
+let current = null;
+let result = null;
+let numberSetter = null;
+let lastOperator = "None";
+let aux = 0;
+let numberEnded = false;
+let flagFirst = true;
+let flagSecond = true;
+let firstNumber = "";
+let secondNumber = "";
+//previous = result
+//current
 function operate(operator){
-    switch(operator){
-        case "add":
-            result = previous + current;
-            previous = result;
-            return result
-        case "subtract":
-            
-            result = previous - current;
-            previous = result;
-            console.log(result);
-            return result
-        case "multiply":
-            result = previous * current;
-            previous = result;
-            return result
-        case "divide":
-            result = previous / current;
-            previous = result;
-            return result
-        case "equal":
-            return result;  
+    if(operator != "equal" && operator !="power"){
+        if(operator == "power" && lastOperator == "None"){
+            lastOperator = "power";
+        }
+        operate("equal");
     }
+    switch(operator){
+        case "add":{
+            flagFirst = false;
+            lastOperator = "add";
+            break;
+        }
+        case "subtract":{
+            flagFirst = false;
+            lastOperator = "subtract";
+            break;
+        }
+        case "multiply":{
+            flagFirst = false;
+            lastOperator = 'multiply';
+            break;
+        }
+        case "divide":{
+            flagFirst = false;
+            lastOperator = "divide";
+            break;
+        }
+        case "comma":{
+            setCurrent(".");
+            updateDisplay(firstNumber);
+            break;
+        }
+        case "power":{
+            lastOperator = "power"
+            firstNumber = firstNumber * firstNumber;            
+            updateDisplay(firstNumber);
+            break;
+        }
+        
+
+        case "equal":{
+            switch(lastOperator){
+                case "add":{
+                    firstNumber = secondNumber + firstNumber;
+                    flagSecond = true;
+                    //secondNumber = "";
+                    updateDisplay(firstNumber);
+                    //flagFirst = true;
+                    return;
+                }
+                case "subtract":{
+                    firstNumber = (secondNumber - firstNumber)*-1;
+                    flagSecond = true;
+                    //secondNumber = "";
+                    updateDisplay(firstNumber);
+                    return;
+                }
+                case "multiply":{
+                    flagSecond = true;
+                    if(secondNumber == ""){
+                        updateDisplay(firstNumber);
+                    }else{
+                        firstNumber = (secondNumber * firstNumber);
+                        updateDisplay(firstNumber);
+                    } 
+                    return;
+                }
+                case "divide":{
+                    flagSecond = true;
+                    if(secondNumber == ""){
+                        updateDisplay(firstNumber);
+                    }else if(secondNumber == 0){
+                        updateDisplay("no.");
+                    }else{
+                        firstNumber = firstNumber/ secondNumber;
+                        updateDisplay(firstNumber);
+                    }
+                    return;
+                }
+            }
+        }
+        
+    }
+    console.log('here');
+
 }
-function updateValue(number){
-    previous = current;
-    current = number;
+function updatePrevious(number){
+    previous = parseFloat(number);
+    //current = 0;
 }
+function setCurrent(number){
+    if(flagFirst == true){
+        firstNumber = firstNumber.toString();
+        firstNumber += number.toString();
+        if(number != "."){
+            firstNumber = parseFloat(firstNumber).toPrecision(15) * 1;
+        }
+        updateDisplay(firstNumber);
+    }else{
+        if(flagSecond == true){
+            secondNumber = "";
+            flagSecond = false;
+        }
+        secondNumber += number.toString();
+        if(number != "."){
+            secondNumber = parseFloat(secondNumber).toPrecision(15) * 1;
+        }
+        updateDisplay(secondNumber);
+            
+    }
+    
+    
+    
+
+}
+
+function updateDisplay(number){
+    number = parseFloat(number);
+    number = number.toPrecision(15);
+    number = number*1;
+    display.textContent = number.toString();
+}
+//update display
+
+const display = document.getElementById('result-display');
+
 //Numerical buttons
 const Button1 = document.getElementById("1");
 const Button2 = document.getElementById("2");
@@ -43,7 +152,7 @@ const Button0 = document.getElementById("0");
 
 const numericalButtons = document.getElementsByClassName("numerical");
 for(i = 0; i<numericalButtons.length;i++){
-    numericalButtons[i].addEventListener('click', updateValue.bind(null, parseInt(numericalButtons[i].textContent)));
+    numericalButtons[i].addEventListener('click', setCurrent.bind(null, parseFloat(numericalButtons[i].textContent)));
 }
 //function buttons
 const subtractionButton = document.getElementById("subtract");
@@ -65,7 +174,6 @@ powerButton.addEventListener('click', operate.bind(null, "power"));
 percentageButton.addEventListener('click', operate.bind(null, "percent"));
 minusplusButton.addEventListener('click', operate.bind(null, "invert"));
 clearButton.addEventListener('click', operate.bind(null, "clear"));
-equalsButton.addEventListener('click', operate.bind(null, "equals"));
+equalsButton.addEventListener('click', operate.bind(null, "equal"));
 decimalButton.addEventListener('click', operate.bind(null, "comma"));
 
-subtractionButton.addEventListener('click', operate.bind(null, "subtract"));
