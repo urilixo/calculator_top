@@ -2,11 +2,18 @@ body{
     background-color: #2a0348;
 }
 button{
+    margin: 0px;
+    padding: 0px;
     border-style:groove;
-    font-size: 2em;
+    font-size: 30pt;
     background-color: #a10a2d;
     color: white;
 }
+button:active{
+    padding: 0px;
+    margin: 0px;
+}
+
 
 .grid-container {
     
@@ -19,35 +26,45 @@ button{
       ". calculator calculator ."      
       ". . . .";
 }
+
 .calculator {
+    align-self:center;
+    
+    
+    background-color: #390661;
+    margin-bottom: 90px;
+    border-radius: 25px;
+    
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 0.3fr 1.7fr;
-    gap: 0px 0px;
+    grid-template-columns: 0.2fr 1fr 1fr 1fr 1fr 0.2fr;
+    grid-template-rows: 0.05fr 1fr 4fr;
     grid-template-areas:
-      "calculator-display calculator-display calculator-display calculator-display"
-      "calculator-buttons calculator-buttons calculator-buttons calculator-buttons";
+      ". . . . . ."
+      ". calculator-display calculator-display calculator-display calculator-display ."
+      ". calculator-buttons calculator-buttons calculator-buttons calculator-buttons .";
     grid-area: calculator;
 }
 .calculator-display { 
-      background-color:#20408e;
-      font-size: 35pt;
-      color: white;
-      text-align: right;
-      grid-area: calculator-display; 
+    align-content: stretch;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;   
+    
+    background-color:#3C5698;
+    font-size: 25pt;
+    color: white;
+    text-align: right;
+    grid-area: calculator-display; 
 }
 .calculator-buttons {
+    align-self: stretch;
+    background-color: khaki;
+    
+    
     
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      ". . . ."
-      ". . . ."
-      ". . . ."
-      ". . . ."
-      ". . . ."
-      ". . . .";
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    
+
     grid-area: calculator-buttons;
 }
