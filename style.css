@@ -1,14 +1,25 @@
+body{
+    background-color: #2a0348;
+}
+button{
+    border-style:groove;
+    font-size: 2em;
+    background-color: #a10a2d;
+    color: white;
+}
+
 .grid-container {
+    
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 15rem 10rem 1fr;
+    grid-template-rows: 2rem 50rem 2fr;
     gap: 0px 0px;
     grid-template-areas:
-      ". calculator calculator ."
-      ". calculator calculator ."
-      ". calculator calculator .";
-  }
-  .calculator {
+      ". . . ."
+      ". calculator calculator ."      
+      ". . . .";
+}
+.calculator {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 0.3fr 1.7fr;
@@ -17,13 +28,16 @@
       "calculator-display calculator-display calculator-display calculator-display"
       "calculator-buttons calculator-buttons calculator-buttons calculator-buttons";
     grid-area: calculator;
-  }
-  .calculator-display { 
-      background-color:lawngreen;
+}
+.calculator-display { 
+      background-color:#20408e;
+      font-size: 35pt;
+      color: white;
       text-align: right;
       grid-area: calculator-display; 
-    }
-  .calculator-buttons {
+}
+.calculator-buttons {
+    
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -36,4 +50,4 @@
       ". . . ."
       ". . . .";
     grid-area: calculator-buttons;
-  }
+}
