@@ -1,4 +1,4 @@
-let numberSetter = null;
+
 let lastOperator = "None";
 let flagFirst = true;
 let flagSecond = true;
@@ -6,6 +6,10 @@ let firstNumber = "";
 let secondNumber = "";
 
 function operate(operator){
+    if(operator == "add" || operator == "subtract" || operator == "divide" || operator == "multiply"){
+        updateOperationDisplay(secondNumber,operator);
+    }
+    
     if(operator != "equal" && operator !="power"){
         if(operator == "power" && lastOperator == "None"){
             lastOperator = "power";
@@ -43,6 +47,15 @@ function operate(operator){
             firstNumber = firstNumber * firstNumber;            
             updateDisplay(firstNumber);
             break;
+        }
+        case 'clear':{           
+            lastOperator = "None";
+            flagFirst = true;
+            flagSecond = true;
+            firstNumber = "";
+            secondNumber = "";
+            updateDisplay(0);
+            updateOperationDisplay()
         }
         
 
@@ -120,7 +133,25 @@ function updateDisplay(number){
     number = number*1;
     display.textContent = number.toString();
 }
+function updateOperationDisplay(number, operation){
+    console.log(firstNumber)
+    operatorDisplay.textContent = "";
+    if(operation == "add"){
+        operatorDisplay.textContent += number.toString()+"+";
 
+    }else if(operation == "multiply"){
+        operatorDisplay.textContent += number.toString()+"x";
+
+    }else if(operation == "subtract"){
+        operatorDisplay.textContent += number.toString()+ "-";
+
+    }else if(operation == 'divide'){
+        operatorDisplay.textContent += number.toString()+"÷";
+    }
+}
+
+//operation display element
+const operatorDisplay = document.getElementById('operation-display');
 //display element
 const display = document.getElementById('result-display');
 
