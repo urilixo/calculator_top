@@ -7,7 +7,7 @@ let firstNumber = "";
 let secondNumber = "";
 
 function operate(operator){
-    if(operator != "comma"){
+    if(operator != "comma" && operator != "invert" && operator != "power" && operator != "percent"){
         flagFirst = false;
     }else if(operator == "comma"){
         setCurrent(".");
@@ -22,7 +22,8 @@ function operate(operator){
         firstNumber = "0";
         secondNumber = "";
         updateDisplay(0);
-        updateOperationDisplay()
+        updateOperationDisplay(null,null)
+        return;
     }
     if(operator == "equal"){
         lastEqual = true;
@@ -31,6 +32,7 @@ function operate(operator){
         if(lastEqual == true){
             lastEqual == false;
             lastOperator = operator;
+            updateOperationDisplay(firstNumber,operator);
             return;
         }
         lastOperator = operator;
