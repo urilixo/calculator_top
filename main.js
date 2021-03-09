@@ -7,109 +7,83 @@ let firstNumber = "";
 let secondNumber = "";
 
 function operate(operator){
+    if(operator != "comma"){
+        flagFirst = false;
+    }else if(operator == "comma"){
+        setCurrent(".");
+        updateDisplay(firstNumber);
+        return;
+    }
+    if(operator == "clear"){
+        lastOperator = "None";
+        lastEqual = false;
+        flagFirst = true;
+        flagSecond = true;
+        firstNumber = "0";
+        secondNumber = "";
+        updateDisplay(0);
+        updateOperationDisplay()
+    }
+    if(operator == "equal"){
+        lastEqual = true;
+    }
     if(operator == "add" || operator == "subtract" || operator == "divide" || operator == "multiply"){
+        if(lastEqual == true){
+            lastEqual == false;
+            lastOperator = operator;
+            return;
+        }
+        lastOperator = operator;
         updateOperationDisplay(secondNumber,operator);
     }
-    
-    if(operator != "equal" && operator !="power"){
-        if(operator == "power" && lastOperator == "None"){
-            lastOperator = "power";
-        }
-        operate("equal");
-    }
-    switch(operator){
+    switch(lastOperator){
         case "add":{
-            flagFirst = false;
-            lastOperator = "add";
+            firstNumber = secondNumber + firstNumber;        
+            
+            updateDisplay(firstNumber);
+            if(operator == "equal"){
+                lastEqual = true;
+            }
             break;
         }
         case "subtract":{
-            flagFirst = false;
-            lastOperator = "subtract";
+            firstNumber = (secondNumber - firstNumber)*-1;
+            
+            updateDisplay(firstNumber);
+            if(operator == "equal"){
+                lastEqual = true;
+            }
             break;
         }
         case "multiply":{
-            flagFirst = false;
-            lastOperator = 'multiply';
+            
+            if(secondNumber == ""){
+                updateDisplay(firstNumber);
+            }else{
+                firstNumber = (secondNumber * firstNumber);
+                updateDisplay(firstNumber);
+            } 
             break;
         }
         case "divide":{
-            flagFirst = false;
-            lastOperator = "divide";
-            break;
-        }
-        case "comma":{
-            setCurrent(".");
-            updateDisplay(firstNumber);
-            break;
-        }
-        case "power":{
-            lastOperator = "power"
-            firstNumber = firstNumber * firstNumber;            
-            updateDisplay(firstNumber);
-            break;
-        }
-        case 'clear':{           
-            lastOperator = "None";
-            flagFirst = true;
-            flagSecond = true;
-            firstNumber = "";
-            secondNumber = "";
-            updateDisplay(0);
-            updateOperationDisplay()
-        }
-        
-
-        case "equal":{
-            switch(lastOperator){
-                case "add":{
-                    firstNumber = secondNumber + firstNumber;
-                    flagSecond = true;
-                    updateDisplay(firstNumber);
-                    if(operator == "equal"){
-                        lastEqual = true;
-                    }
-                    break;
-                }
-                case "subtract":{
-                    firstNumber = (secondNumber - firstNumber)*-1;
-                    flagSecond = true;
-                    updateDisplay(firstNumber);
-                    if(operator == "equal"){
-                        lastEqual = true;
-                    }
-                    break;
-                }
-                case "multiply":{
-                    flagSecond = true;
-                    if(secondNumber == ""){
-                        updateDisplay(firstNumber);
-                    }else{
-                        firstNumber = (secondNumber * firstNumber);
-                        updateDisplay(firstNumber);
-                    } 
-                    break;
-                }
-                case "divide":{
-                    flagSecond = true;
-                    if(secondNumber == ""){
-                        updateDisplay(firstNumber);
-                    }else if(secondNumber == 0){
-                        updateDisplay("no.");
-                    }else{
-                        firstNumber = firstNumber/ secondNumber;
-                        updateDisplay(firstNumber);
-                    }
-                    break;
-                }
+            
+            if(secondNumber === ""){
+                updateDisplay(firstNumber);
+            }else if(secondNumber === 0){
+                updateDisplay("no.");
+            }else{
+                firstNumber = firstNumber/ secondNumber;
+                updateDisplay(firstNumber);
             }
-        }   
-    }
+            break;
+        }
+    }   
+    firstNumber = parseFloat(firstNumber)
     if(flagFirst == false){
         flagSecond = true;
     }
-
 }
+
 //
 // Sets the most recent input by user as firstNumber if 
 //  it is the first input, or, as secondNumber if the flag is true.
@@ -138,13 +112,16 @@ function setCurrent(number){
 // Function to update the display with a string containing the most recent input or most recent result.
 //
 function updateDisplay(number){
+    if(number == "no."){
+        display.textContent = 'Cannot divide by zero.';
+        return;
+    }
     number = parseFloat(number);
     number = number.toPrecision(15);
     number = number*1;
     display.textContent = number.toString();
 }
 function updateOperationDisplay(number, operation){
-    console.log(firstNumber)
     operatorDisplay.textContent = "";
     if(operation == "add"){
         operatorDisplay.textContent += number.toString()+"+";
@@ -214,11 +191,10 @@ window.addEventListener("keydown", (e) =>{
         operate('equal');
         
     }else if (e.key == "." || e.key ==","){
-        operate('comma');    
+        operate('comma');
     }else if (e.key == "c" || e.key == "C"){
         operate('clear');
     }
-    console.log(e.key);
     });
 
 //function binds
