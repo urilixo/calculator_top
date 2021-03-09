@@ -1,5 +1,6 @@
 
 let lastOperator = "None";
+let lastEqual = false;
 let flagFirst = true;
 let flagSecond = true;
 let firstNumber = "";
@@ -65,13 +66,19 @@ function operate(operator){
                     firstNumber = secondNumber + firstNumber;
                     flagSecond = true;
                     updateDisplay(firstNumber);
-                    return;
+                    if(operator == "equal"){
+                        lastEqual = true;
+                    }
+                    break;
                 }
                 case "subtract":{
                     firstNumber = (secondNumber - firstNumber)*-1;
                     flagSecond = true;
                     updateDisplay(firstNumber);
-                    return;
+                    if(operator == "equal"){
+                        lastEqual = true;
+                    }
+                    break;
                 }
                 case "multiply":{
                     flagSecond = true;
@@ -81,7 +88,7 @@ function operate(operator){
                         firstNumber = (secondNumber * firstNumber);
                         updateDisplay(firstNumber);
                     } 
-                    return;
+                    break;
                 }
                 case "divide":{
                     flagSecond = true;
@@ -93,10 +100,13 @@ function operate(operator){
                         firstNumber = firstNumber/ secondNumber;
                         updateDisplay(firstNumber);
                     }
-                    return;
+                    break;
                 }
             }
         }   
+    }
+    if(flagFirst == false){
+        flagSecond = true;
     }
 
 }
@@ -182,6 +192,34 @@ const minusplusButton = document.getElementById("invert");
 const clearButton = document.getElementById("clear");
 const equalsButton = document.getElementById("equal");
 const decimalButton = document.getElementById("comma");
+
+//keyboard binds
+window.addEventListener("keydown", (e) =>{
+    const NUMBERS = [0,1,2,3,4,5,6,7,8,9]
+    if(e.key in NUMBERS){
+        setCurrent(e.key);
+    }else if (e.key == "/"){
+        operate("divide");
+        
+    }else if (e.key == "+"){
+        operate('add');
+        
+    }else if (e.key == "-"){
+        operate('subtract');
+        
+    }else if (e.key == "*"){
+        operate('multiply');
+        
+    }else if (e.key == "=" || e.key == "Enter"){
+        operate('equal');
+        
+    }else if (e.key == "." || e.key ==","){
+        operate('comma');    
+    }else if (e.key == "c" || e.key == "C"){
+        operate('clear');
+    }
+    console.log(e.key);
+    });
 
 //function binds
 subtractionButton.addEventListener('click', operate.bind(null, "subtract"));
