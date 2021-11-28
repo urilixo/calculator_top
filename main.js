@@ -3,12 +3,6 @@ let lastValue = 0
 let lastOperator = null
 let setting = null
 
-//LastValue = LastValue (LastOperator) CurrentValue 
-//lv = null + 1  (1+2 = 3 . 2 + 5)
-//lv = 1 + 2
-//lv = 2 + 5
-
-
 function operate(operator, type){
     if(type == "number"){
         if(operator == '.' && getCurrent().toString().includes('.') == true){
