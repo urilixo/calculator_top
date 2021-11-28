@@ -1,120 +1,132 @@
+let currentValue = 0
+let lastValue = 0
+let lastOperator = null
+let setting = null
 
-let lastOperator = "None";
-let lastEqual = false;
-let flagFirst = true;
-let flagSecond = true;
-let firstNumber = "";
-let secondNumber = "";
+//LastValue = LastValue (LastOperator) CurrentValue 
+//lv = null + 1  (1+2 = 3 . 2 + 5)
+//lv = 1 + 2
+//lv = 2 + 5
 
-function operate(operator){
-    if(operator != "comma" && operator != "invert" && operator != "power" && operator != "percent"){
-        flagFirst = false;
-    }else if(operator == "comma"){
-        setCurrent(".");
-        updateDisplay(firstNumber);
-        return;
-    }
-    if(operator == "clear"){
-        lastOperator = "None";
-        lastEqual = false;
-        flagFirst = true;
-        flagSecond = true;
-        firstNumber = "0";
-        secondNumber = "";
-        updateDisplay(0);
-        updateOperationDisplay(null,null)
-        return;
-    }
-    if(operator == "equal"){
-        lastEqual = true;
-    }
-    if(operator == "add" || operator == "subtract" || operator == "divide" || operator == "multiply"){
-        if(lastEqual == true){
-            lastEqual == false;
-            lastOperator = operator;
-            updateOperationDisplay(firstNumber,operator);
+
+function operate(operator, type){
+    if(type == "number"){
+        if(operator == '.' && getCurrent().toString().includes('.') == true){
             return;
         }
-        lastOperator = operator;
-        updateOperationDisplay(secondNumber,operator);
+        setCurrent(operator);
+        updateHistory(operator);
+    }else{
+        if(operator != lastOperator && operator != "C"){
+            setting = lastOperator;
+        }else{
+            setting = operator;
+        }    
+        switch (setting) {
+            case "+":
+                if(lastValue == 0){
+                    lastValue = getCurrent();
+                }else{
+                    lastValue += getCurrent();
+                }
+                break;
+            case "-":
+                if(lastValue == 0){
+                    lastValue = getCurrent();
+                }else{
+                    lastValue -= getCurrent();
+                }
+                break;
+            case "×":
+                if(lastValue == 0){
+                    lastValue = getCurrent();
+                }else{
+                    lastValue *= getCurrent();
+                }
+                break;
+            case "÷":
+                if(lastValue == 0){
+                    lastValue = getCurrent();
+                }else{
+                    lastValue /= getCurrent();
+                }
+                break;
+            case "=":
+                if(lastOperator == "="){
+                    break;
+                }
+                if(lastValue == null){
+                    lastValue = 0;
+                }else{
+                    operate(lastOperator);
+                }
+                break;
+            case "C":
+                currentValue = 0;
+                lastValue = 0;
+                lastOperator = null;
+                setting = null;
+                break;
+            case ".":
+                setCurrent
+            case null:
+                
+                lastOperator = operator;
+                if(operator != "=" &&  operator != "C" && operator != "." && operator != null){
+                    operate(lastOperator)
+                }                
+                currentValue = "";
+                resetHistory();
+                updateHistory(lastValue);
+                break;
+            default:
+                break;
+        }
+        if(operator != "=" && operator != "C" && operator != "."){
+            lastOperator = operator;
+        }
+        resetHistory();
+        updateHistory(lastValue);
+        updateDisplay(lastValue)
+        
+        
+        if(operator != "=" &&  operator != "C" && operator != "."){
+            updateHistory(lastOperator);
+        }
+        if(operator == 'C'){
+            resetHistory();
+        }
     }
-    switch(lastOperator){
-        case "add":{
-            firstNumber = secondNumber + firstNumber;        
-            
-            updateDisplay(firstNumber);
-            if(operator == "equal"){
-                lastEqual = true;
-            }
-            break;
-        }
-        case "subtract":{
-            firstNumber = (secondNumber - firstNumber)*-1;
-            
-            updateDisplay(firstNumber);
-            if(operator == "equal"){
-                lastEqual = true;
-            }
-            break;
-        }
-        case "multiply":{
-            
-            if(secondNumber == ""){
-                updateDisplay(firstNumber);
-            }else{
-                firstNumber = (secondNumber * firstNumber);
-                updateDisplay(firstNumber);
-            } 
-            break;
-        }
-        case "divide":{
-            
-            if(secondNumber === ""){
-                updateDisplay(firstNumber);
-            }else if(secondNumber === 0){
-                updateDisplay("no.");
-            }else{
-                firstNumber = firstNumber/ secondNumber;
-                updateDisplay(firstNumber);
-            }
-            break;
-        }
-    }   
-    firstNumber = parseFloat(firstNumber)
-    if(flagFirst == false){
-        flagSecond = true;
+}
+// Updates primary display to show current operation in pairs
+function updateHistory(element){
+    if(displayHistory.textContent == "0"){
+        displayHistory.textContent == ""
     }
+    displayHistory.textContent += element.toString();
+}
+// Receives user input and sets currentValue as a string of the user numbers.
+function setCurrent(number){ 
+    if(currentValue == null){
+        currentValue = "";
+    }
+    currentValue += number.toString();
+    updateDisplay(currentValue);
+}
+function getCurrent(){
+    let value = currentValue;
+    currentValue = 0;
+    return parseFloat(value);
+}
+function resetHistory(number){
+    displayHistory.textContent = "";
 }
 
 //
-// Sets the most recent input by user as firstNumber if 
-//  it is the first input, or, as secondNumber if the flag is true.
-//
-function setCurrent(number){
-    if(flagFirst == true){
-        firstNumber = firstNumber.toString();
-        firstNumber += number.toString();
-        if(number != "."){
-            firstNumber = parseFloat(firstNumber).toPrecision(15) * 1;
-        }
-        updateDisplay(firstNumber);
-    }else{
-        if(flagSecond == true){
-            secondNumber = "";
-            flagSecond = false;
-        }
-        secondNumber += number.toString();
-        if(number != "."){
-            secondNumber = parseFloat(secondNumber).toPrecision(15) * 1;
-        }
-        updateDisplay(secondNumber);            
-    }    
-}
-//
-// Function to update the display with a string containing the most recent input or most recent result.
+// Update secondary display to show user input
 //
 function updateDisplay(number){
-    if(number == "no."){
+    if(number == "Infinity"){
         display.textContent = 'Cannot divide by zero.';
         return;
     }
@@ -123,54 +135,16 @@ function updateDisplay(number){
     number = number*1;
     display.textContent = number.toString();
 }
-function updateOperationDisplay(number, operation){
-    operatorDisplay.textContent = "";
-    if(operation == "add"){
-        operatorDisplay.textContent += number.toString()+"+";
 
-    }else if(operation == "multiply"){
-        operatorDisplay.textContent += number.toString()+"x";
-
-    }else if(operation == "subtract"){
-        operatorDisplay.textContent += number.toString()+ "-";
-
-    }else if(operation == 'divide'){
-        operatorDisplay.textContent += number.toString()+"÷";
-    }
-}
-
-//operation display element
-const operatorDisplay = document.getElementById('operation-display');
-//display element
-const display = document.getElementById('result-display');
-
-//Numerical buttons elements
-const Button1 = document.getElementById("1");
-const Button2 = document.getElementById("2");
-const Button3 = document.getElementById("3");
-const Button4 = document.getElementById("4");
-const Button5 = document.getElementById("5");
-const Button6 = document.getElementById("6");
-const Button7 = document.getElementById("7");
-const Button8 = document.getElementById("8");
-const Button9 = document.getElementById("9");
-const Button0 = document.getElementById("0");
-
-const numericalButtons = document.getElementsByClassName("numerical");
+const numericalButtons = document.getElementsByClassName("numbers");
 for(i = 0; i<numericalButtons.length;i++){
-    numericalButtons[i].addEventListener('click', setCurrent.bind(null, parseFloat(numericalButtons[i].textContent)));
+    numericalButtons[i].addEventListener('click', operate.bind(null, numericalButtons[i].textContent, "number"));
 }
-//function buttons
-const subtractionButton = document.getElementById("subtract");
-const addButton = document.getElementById("add");
-const multiplyButton = document.getElementById("multiply");
-const divisionButton = document.getElementById("divide");
-const powerButton = document.getElementById("power");
-const percentageButton = document.getElementById("percent");
-const minusplusButton = document.getElementById("invert");
-const clearButton = document.getElementById("clear");
-const equalsButton = document.getElementById("equal");
-const decimalButton = document.getElementById("comma");
+const operationButtons = document.getElementsByClassName("operators");
+for(i = 0; i<operationButtons.length;i++){
+    operationButtons[i].addEventListener('click', operate.bind(null, operationButtons[i].textContent), null);
+}
+
 
 //keyboard binds
 window.addEventListener("keydown", (e) =>{
@@ -178,36 +152,23 @@ window.addEventListener("keydown", (e) =>{
     if(e.key in NUMBERS){
         setCurrent(e.key);
     }else if (e.key == "/"){
-        operate("divide");
+        operate("÷", null);
         
     }else if (e.key == "+"){
-        operate('add');
+        operate('+', null);
         
     }else if (e.key == "-"){
-        operate('subtract');
+        operate('-', null);
         
     }else if (e.key == "*"){
-        operate('multiply');
+        operate('×', null);
         
     }else if (e.key == "=" || e.key == "Enter"){
-        operate('equal');
+        operate('=', null);
         
     }else if (e.key == "." || e.key ==","){
-        operate('comma');
+        operate('.', "number");
     }else if (e.key == "c" || e.key == "C"){
-        operate('clear');
+        operate('C', null);
     }
     });
-
-//function binds
-subtractionButton.addEventListener('click', operate.bind(null, "subtract"));
-addButton.addEventListener('click', operate.bind(null, "add"));
-multiplyButton.addEventListener('click', operate.bind(null, "multiply"));
-divisionButton.addEventListener('click', operate.bind(null, "divide"));
-powerButton.addEventListener('click', operate.bind(null, "power"));
-percentageButton.addEventListener('click', operate.bind(null, "percent"));
-minusplusButton.addEventListener('click', operate.bind(null, "invert"));
-clearButton.addEventListener('click', operate.bind(null, "clear"));
-equalsButton.addEventListener('click', operate.bind(null, "equal"));
-decimalButton.addEventListener('click', operate.bind(null, "comma"));
-

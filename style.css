@@ -1,70 +1,70 @@
 body{
-    background-color: #2a0348;
+    background-color: #210348;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#displayHistory{
+    text-align: right;
+    min-height: 25px;
+    background-color: rgb(22, 22, 22);
+    color: white;
+    font-size: 14pt;
+    font-weight: 700;
+    border-radius: 8px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+#display{
+    text-align: right;
+    background-color: black;
+    color: white;
+    font-size: 18pt;
+    font-weight: 900;
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.calculator{
+    display: flex;
+    flex-direction: column;
+    margin: 10vh 10vw;
+    padding: 16px;
+    border-radius: 24px;
+    border-style:outset;
+    box-shadow: 8px 12px 18px #111111;
+    background-color: rgb(225, 224, 228);
+}
+.button-row{
+    display: flex;
+    justify-content: right;
+    background-color: rgb(221, 209, 233);
+}
+.button-column{
+    display: flex;
+    justify-content: right;
+    background-color: rgb(221, 209, 233);
+    flex-direction: column;
 }
 button{
-    margin: 0px;
-    padding: 0px;
-    border-style:groove;
-    font-size: 30pt;
-    background-color: #a10a2d;
+    min-height: 80px;
+    min-width: 80px;
+}
+.operators{
+    background-color: rgb(40,40,40);
     color: white;
+    font-size: 28px;
+    font-weight: 900;
+    border-radius: 24px;
 }
-button:active{
-    padding: 0px;
-    margin: 0px;
-}
-
-
-.grid-container {
-    
-    display: grid;
-    grid-template-columns: 1fr 15rem 10rem 1fr;
-    grid-template-rows: 2rem 50rem 2fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      ". . . ."
-      ". calculator calculator ."      
-      ". . . .";
-}
-
-.calculator {
-    align-self:center;
-    
-    
-    background-color: #390661;
-    margin-bottom: 90px;
-    border-radius: 25px;
-    
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 1fr 1fr 1fr 0.2fr;
-    grid-template-rows: 0.05fr 1fr 4fr;
-    grid-template-areas:
-      ". . . . . ."
-      ". calculator-display calculator-display calculator-display calculator-display ."
-      ". calculator-buttons calculator-buttons calculator-buttons calculator-buttons .";
-    grid-area: calculator;
-}
-.calculator-display { 
-    align-content: stretch;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;   
-    
-    background-color:#3C5698;
-    font-size: 25pt;
+.numbers{
+    background-color: rgb(70,70,70);
     color: white;
-    text-align: right;
-    grid-area: calculator-display; 
+    font-size: 28px;
+    font-weight: 900;
+    border-radius: 24px;
+    
 }
-.calculator-buttons {
-    align-self: stretch;
-    background-color: khaki;
-    
-    
-    
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    
-
-    grid-area: calculator-buttons;
+#clear{
+    flex: 1;
 }
